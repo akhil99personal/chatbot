@@ -30,53 +30,66 @@ export default function Welcome({ onPick, isLoggedIn, userName }) {
     : [...DEFAULT_SUGGESTIONS, ...MULTILINGUAL_SUGGESTIONS.slice(0, 2)];
 
   const greeting = isLoggedIn && userName
-    ? `Welcome back, ${userName.split(" ")[0]}! 🏠`
-    : "How can I help you with real estate today?";
+    ? `Welcome back, ${userName.split(" ")[0]}`
+    : "How can I help you today?";
 
   const subtitle = isLoggedIn
-    ? "Your personal AI assistant — search properties, view analytics, get recommendations, or ask in any language."
-    : "Powered by Gemini · Find homes, projects, EMIs and documents in one chat. Ask in Hindi, Marathi, Telugu, Kannada or English!";
+    ? "Your AI real estate assistant — search properties, view analytics, get AI recommendations, ask in multiple languages"
+    : "AI-powered real estate assistant. Find properties, calculate EMIs, get legal documents. Ask in English, Hindi, Marathi, Telugu, and more";
 
   return (
     <div className="cb-welcome">
       <motion.div
-        initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        initial={{ opacity: 0, y: 12 }} 
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{ textAlign: 'center', width: '100%' }}
       >
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Logo size={56} />
+        <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Logo size={56} />
+          </motion.div>
         </div>
         <h1>{greeting}</h1>
         <p>{subtitle}</p>
       </motion.div>
+
       <div className="cb-suggestions">
         {suggestions.map((s, i) => (
           <motion.button
             key={s.label}
-            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
+            initial={{ opacity: 0, y: 8 }} 
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: Math.min(0.1 + i * 0.05, 0.5) }}
             onClick={() => onPick(s.label)}
             className="cb-suggestion"
+            whileHover={{ y: -2 }}
+            whileTap={{ y: 0 }}
           >
             <span className="cb-suggestion-icon">
               <s.icon className="h-5 w-5" />
             </span>
-            <span style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1 }}>
               <span className="cb-suggestion-tag">{s.tag}</span>
               <span className="cb-suggestion-text">{s.label}</span>
-            </span>
+            </div>
           </motion.button>
         ))}
       </div>
 
-      {/* Language hint */}
+      {/* Language Support Badge */}
       <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
+        initial={{ opacity: 0, y: 8 }} 
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
         className="cb-welcome-lang-hint"
       >
         <Globe className="h-3.5 w-3.5" />
-        <span>Supports: English · Hindi · Marathi · Telugu · Kannada · Tamil · Bengali · Hinglish</span>
+        <span>English · हिंदी · मराठी · తెలుగు · ಕನ್ನಡ · தமிழ் · বাংলা</span>
       </motion.div>
     </div>
   );

@@ -159,10 +159,10 @@ export default function Composer({ value, onChange, onSubmit, onStop, isStreamin
           type="button"
           onClick={onToggleAutoSpeak}
           aria-label={autoSpeak ? "Disable voice responses" : "Enable voice responses"}
-          title={autoSpeak ? "Voice mode ON — AI will speak responses" : "Enable voice mode — AI speaks responses aloud"}
+          title={autoSpeak ? "Voice mode is ON — AI speaks responses" : "Enable voice mode — AI speaks responses"}
           className={`cb-composer-btn cb-composer-voice-mode ${autoSpeak ? "active" : ""}`}
         >
-          {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+          {autoSpeak ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
         </button>
 
         {isStreaming ? (

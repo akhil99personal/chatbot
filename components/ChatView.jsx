@@ -260,15 +260,19 @@ export default function ChatView({ threadId }) {
           </div>
         ) : (
           <div className="cb-messages">
-            {messages.map((m) => <MessageRow key={m.id} message={m} />)}
+            {messages.map((m, idx) => (
+              <MessageRow key={m.id} message={m} />
+            ))}
             {thinking && <AssistantTyping message={searchStatus} />}
           </div>
         )}
       </div>
       <div className="cb-composer-wrap">
         <Composer
-          value={input} onChange={setInput}
-          onSubmit={() => send(input)} onStop={stop}
+          value={input}
+          onChange={setInput}
+          onSubmit={() => send(input)}
+          onStop={stop}
           isStreaming={streaming}
           autoSpeak={autoSpeak}
           onToggleAutoSpeak={() => setAutoSpeak((v) => !v)}

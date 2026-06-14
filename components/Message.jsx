@@ -155,16 +155,23 @@ function ActionConfirmCard({ data }) {
 
 export function AssistantTyping({ message = "Finding the best results for you…" }) {
   return (
-    <div className="cb-typing">
-      <Logo size={36} />
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="cb-typing"
+    >
+      <div style={{ width: 36, height: 36, flexShrink: 0 }}>
+        <Logo size={36} />
+      </div>
       <div className="cb-typing-body">
         <p className="cb-typing-message">{message}</p>
-        <div className="cb-typing-dots">
-          <span className="cb-dot" />
-          <span className="cb-dot" />
-          <span className="cb-dot" />
+        <div className="cb-typing-skeleton">
+          <div className="cb-skeleton-line" />
+          <div className="cb-skeleton-line" style={{ width: "90%" }} />
+          <div className="cb-skeleton-line" style={{ width: "75%" }} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

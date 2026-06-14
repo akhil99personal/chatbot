@@ -72,29 +72,36 @@ export default function Sidebar({ onNavigate }) {
     <aside className="cb-sidebar">
       <div className="cb-sidebar-top">
         <div className="cb-sidebar-title">
-          <Logo size={28} />
+          <Logo size={24} />
           <span>Milestono</span>
         </div>
       </div>
+
       <button onClick={newChat} className="cb-new-chat-btn">
         <MessageSquarePlus className="h-4 w-4" />
         New chat
       </button>
-      <div className="cb-sidebar-label">Recent</div>
+
+      <div className="cb-sidebar-label">Conversations</div>
       <nav className="cb-thread-list">
         {threads.length === 0 ? (
-          <div className="cb-thread-list-empty">No conversations yet.</div>
+          <div className="cb-thread-list-empty">No conversations yet</div>
         ) : threads.map((t) => {
           const active = t.id === threadId;
           return (
             <Link
-              key={t.id} to={`/milestono-ai/c/${t.id}`} onClick={onNavigate}
+              key={t.id} 
+              to={`/milestono-ai/c/${t.id}`} 
+              onClick={onNavigate}
               className={`cb-thread-link ${active ? "active" : ""}`}
+              title={t.title}
             >
               <span className="cb-thread-title">{t.title}</span>
               <button
                 onClick={(e) => remove(t.id, e)}
-                className="cb-thread-delete" aria-label="Delete"
+                className="cb-thread-delete" 
+                aria-label="Delete conversation"
+                title="Delete"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
@@ -103,7 +110,7 @@ export default function Sidebar({ onNavigate }) {
         })}
       </nav>
 
-      {/* User section */}
+      {/* User Section */}
       <div className="cb-sidebar-user">
         {loggedIn ? (
           <>
@@ -120,21 +127,29 @@ export default function Sidebar({ onNavigate }) {
                 <span className="cb-sidebar-user-email">{userProfile?.email || ""}</span>
               </div>
             </div>
-            <button onClick={handleLogout} className="cb-sidebar-logout-btn" title="Logout">
+            <button 
+              onClick={handleLogout} 
+              className="cb-sidebar-logout-btn" 
+              title="Logout from your account"
+            >
               <LogOut className="h-4 w-4" />
               Logout
             </button>
           </>
         ) : (
-          <button onClick={handleLogin} className="cb-sidebar-login-btn">
+          <button 
+            onClick={handleLogin} 
+            className="cb-sidebar-login-btn"
+            title="Login to save conversations and preferences"
+          >
             <LogIn className="h-4 w-4" />
-            Login for personalized features
+            Sign in
           </button>
         )}
       </div>
 
       <div className="cb-sidebar-footer">
-        Local history · Gemini powered
+        AI Powered · Local History
       </div>
     </aside>
   );
