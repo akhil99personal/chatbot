@@ -729,13 +729,20 @@ body {
   }
 }
 
-/* Skeleton Line Loader */
+/* Skeleton Line Loader (ChatGPT Style) */
+.cb-typing-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cb-space-2);
+  margin-top: var(--cb-space-2);
+}
+
 .cb-skeleton-line {
-  height: 14px;
+  height: 12px;
   background: linear-gradient(
     90deg,
     var(--cb-surface-secondary) 0%,
-    rgba(0, 0, 0, 0.02) 50%,
+    rgba(99, 102, 241, 0.05) 50%,
     var(--cb-surface-secondary) 100%
   );
   background-size: 200% 100%;
@@ -757,11 +764,11 @@ body {
 }
 
 .cb-skeleton-line:nth-child(2) {
-  width: 95%;
+  width: 90%;
 }
 
 .cb-skeleton-line:nth-child(3) {
-  width: 85%;
+  width: 75%;
 }
 
 /* ─────────────────────────────────────────────────────────────
