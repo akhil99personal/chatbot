@@ -247,20 +247,36 @@ export default function ChatView({ threadId }) {
 
   const isEmpty = messages.length === 0;
 
+  const userName = userProfile?.fullName || userProfile?.name || "User";
+
   return (
     <div className="cb-chat-wrap">
+      {!isEmpty && (
+        <div className="cb-navbar">
+          <div className="cb-navbar-left">
+            <div className="cb-model-selector">
+              <span style={{ width: '16px', height: '16px', background: '#10a37f', borderRadius: '4px' }} />
+              Milestono AI 4o
+              <span style={{ fontSize: '10px', marginLeft: '4px' }}>▼</span>
+            </div>
+          </div>
+          <div className="cb-navbar-right">
+            <button className="cb-navbar-btn" title="Settings">⚙️</button>
+          </div>
+        </div>
+      )}
       <div ref={scrollRef} className="cb-scroll">
         {isEmpty ? (
           <div className="cb-welcome-center" style={{ minHeight: "100%" }}>
             <WelcomePro
               onPick={(p) => send(p)}
               isLoggedIn={loggedIn}
-              userName={userProfile?.fullName || userProfile?.name || ""}
+              userName={userName}
             />
           </div>
         ) : (
           <div className="cb-messages">
-            {messages.map((m) => <MessageRow key={m.id} message={m} />)}
+            {messages.map((m) => <MessageRow key={m.id} message={m} userName={userName} />)}
             {thinking && <AssistantTyping message={searchStatus} />}
           </div>
         )}
@@ -272,6 +288,7 @@ export default function ChatView({ threadId }) {
           isStreaming={streaming}
           autoSpeak={autoSpeak}
           onToggleAutoSpeak={() => setAutoSpeak((v) => !v)}
+          isEmpty={isEmpty}
         />
       </div>
     </div>

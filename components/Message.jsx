@@ -15,40 +15,48 @@ import NearbyMapCard from "./cards/NearbyMapCard.jsx";
 import DirectionsMapCard from "./cards/DirectionsMapCard.jsx";
 import PropertyDetailsCard from "./cards/PropertyDetailsCard.jsx";
 
-export default function MessageRow({ message }) {
+export default function MessageRow({ message, userName = "You" }) {
   const isUser = message.role === "user";
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
-      className="cb-msg-row"
+      className={`cb-msg-row ${isUser ? 'user' : 'ai'}`}
     >
+      <Avatar isUser={isUser} userName={userName} />
       <div className="cb-msg-inner">
-        <Avatar isUser={isUser} />
-        <div className="cb-msg-body">
-          <div className="cb-msg-label">
-            {isUser ? "You" : "Milestono"}
-          </div>
-          {isUser ? (
+        {isUser ? (
+          <div className="cb-message-bubble">
             <div className="cb-msg-text">{message.content}</div>
-          ) : (
-            <AssistantBody id={message.id} content={message.content} />
-          )}
-        </div>
+          </div>
+        ) : (
+          <AssistantBody id={message.id} content={message.content} />
+        )}
       </div>
     </motion.div>
   );
 }
 
-function Avatar({ isUser }) {
+function Avatar({ isUser, userName = "You" }) {
   if (isUser) {
+    const initials = userName
+      ?.split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2) || 'U';
+    
     return (
-      <div className="cb-avatar cb-avatar-user">
-        <User className="h-5 w-5" />
+      <div className="cb-avatar cb-avatar-user" title={userName}>
+        {initials}
       </div>
     );
   }
-  return <div className="cb-avatar"><Logo size={36} /></div>;
+  return (
+    <div className="cb-avatar cb-avatar-ai" title="Milestono AI">
+      M
+    </div>
+  );
 }
 
 function AssistantBody({ id, content }) {
@@ -63,18 +71,20 @@ function AssistantBody({ id, content }) {
   const plain = (content || "").replace(/```json[\s\S]*?```/g, "").trim();
 
   return (
-    <div>
-      {segments.map((seg, i) =>
-        seg.type === "text" ? (
-          <div key={i} className="cb-md cb-msg-text">
-            <ReactMarkdown>{seg.content}</ReactMarkdown>
-          </div>
-        ) : (
-          <div key={i} style={{ marginTop: '12px', marginBottom: '12px' }}>
-            <CardRenderer data={seg.data} />
-          </div>
-        )
-      )}
+    <div className="cb-ai-msg-wrapper">
+      <div className="cb-message-bubble">
+        {segments.map((seg, i) =>
+          seg.type === "text" ? (
+            <div key={i} className="cb-msg-text">
+              <ReactMarkdown>{seg.content}</ReactMarkdown>
+            </div>
+          ) : (
+            <div key={i} style={{ marginTop: '12px', marginBottom: '12px' }}>
+              <CardRenderer data={seg.data} />
+            </div>
+          )
+        )}
+      </div>
 
       <div className="cb-msg-actions">
         <IconButton
@@ -155,15 +165,12 @@ function ActionConfirmCard({ data }) {
 
 export function AssistantTyping({ message = "Finding the best results for you…" }) {
   return (
-    <div className="cb-typing">
-      <Logo size={36} />
-      <div className="cb-typing-body">
-        <p className="cb-typing-message">{message}</p>
-        <div className="cb-typing-dots">
-          <span className="cb-dot" />
-          <span className="cb-dot" />
-          <span className="cb-dot" />
-        </div>
+    <div className="cb-typing ai">
+      <div className="cb-typing-avatar">M</div>
+      <div className="cb-typing-bubble">
+        <span className="cb-dot" />
+        <span className="cb-dot" />
+        <span className="cb-dot" />
       </div>
     </div>
   );

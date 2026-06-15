@@ -7,7 +7,7 @@ const STT_LANGS = [
   { code: "mr-IN", label: "मराठी", title: "Marathi" },
 ];
 
-export default function Composer({ value, onChange, onSubmit, onStop, isStreaming, autoSpeak, onToggleAutoSpeak }) {
+export default function Composer({ value, onChange, onSubmit, onStop, isStreaming, autoSpeak, onToggleAutoSpeak, isEmpty = false }) {
   const taRef = useRef(null);
   const [supported, setSupported] = useState(true);
   const [listening, setListening] = useState(false);
@@ -118,6 +118,52 @@ export default function Composer({ value, onChange, onSubmit, onStop, isStreamin
     onSubmit();
   }
 
+  if (isEmpty) {
+    // Welcome screen input with action buttons
+    return (
+      <div className="cb-composer">
+        <div className="cb-welcome-input">
+          <div className="cb-input-actions">
+            <button onClick={() => onSubmit("Search for properties around me")} className="cb-action-btn">
+              <span className="cb-action-btn-icon">🏠</span>
+              Nearby Properties
+            </button>
+            <button onClick={() => onSubmit("Calculate EMI for a property")} className="cb-action-btn">
+              <span className="cb-action-btn-icon">💰</span>
+              EMI Calculator
+            </button>
+            <button onClick={() => onSubmit("Compare properties")} className="cb-action-btn">
+              <span className="cb-action-btn-icon">⚖️</span>
+              Compare
+            </button>
+          </div>
+          <form onSubmit={handleSubmit} className="cb-composer-form">
+            <textarea
+              ref={taRef}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSubmit(e); }
+              }}
+              placeholder="Initiate a query or send a command to the AI..."
+              rows={1}
+            />
+            {isStreaming ? (
+              <button type="button" onClick={onStop} aria-label="Stop generating" className="cb-composer-btn cb-composer-stop">
+                <Square className="h-4 w-4 fill-current" />
+              </button>
+            ) : (
+              <button type="submit" disabled={!value.trim()} aria-label="Send" className="cb-composer-btn cb-composer-send">
+                <ArrowUp className="h-5 w-5" />
+              </button>
+            )}
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // Chat mode input (ChatGPT style)
   return (
     <div className="cb-composer">
       <form onSubmit={handleSubmit} className="cb-composer-form">
@@ -126,22 +172,11 @@ export default function Composer({ value, onChange, onSubmit, onStop, isStreamin
           onClick={toggleMic}
           disabled={!supported}
           aria-label={listening ? "Stop recording" : "Start voice input"}
-          title={!supported ? "Speech recognition not supported in this browser" : (listening ? "Listening… click to stop" : "Voice input")}
+          title={!supported ? "Speech recognition not supported" : (listening ? "Listening…" : "Voice input")}
           className={`cb-composer-btn cb-composer-mic ${listening ? "listening" : ""}`}
         >
           {listening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
         </button>
-
-        {supported && (
-          <button
-            type="button"
-            onClick={cycleLang}
-            title={`Speech Recognition Language: ${currentLangObj.title}. Click to switch.`}
-            className="cb-composer-lang-btn"
-          >
-            {currentLangObj.label}
-          </button>
-        )}
 
         <textarea
           ref={taRef}
@@ -150,40 +185,20 @@ export default function Composer({ value, onChange, onSubmit, onStop, isStreamin
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSubmit(e); }
           }}
-          placeholder={listening ? "🎤 Listening…" : "Ask about properties, EMIs, documents…"}
+          placeholder={listening ? "Listening…" : "Ask about properties, EMIs, documents…"}
           rows={1}
         />
 
-        {/* Voice-only mode toggle (auto-speak responses) */}
-        <button
-          type="button"
-          onClick={onToggleAutoSpeak}
-          aria-label={autoSpeak ? "Disable voice responses" : "Enable voice responses"}
-          title={autoSpeak ? "Voice mode ON — AI will speak responses" : "Enable voice mode — AI speaks responses aloud"}
-          className={`cb-composer-btn cb-composer-voice-mode ${autoSpeak ? "active" : ""}`}
-        >
-          {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-        </button>
-
         {isStreaming ? (
-          <button
-            type="button" onClick={onStop} aria-label="Stop generating"
-            className="cb-composer-btn cb-composer-stop"
-          >
+          <button type="button" onClick={onStop} aria-label="Stop" className="cb-composer-btn cb-composer-stop">
             <Square className="h-4 w-4 fill-current" />
           </button>
         ) : (
-          <button
-            type="submit" disabled={!value.trim()} aria-label="Send"
-            className="cb-composer-btn cb-composer-send"
-          >
+          <button type="submit" disabled={!value.trim()} aria-label="Send" className="cb-composer-btn cb-composer-send">
             <ArrowUp className="h-5 w-5" />
           </button>
         )}
       </form>
-      <p className="cb-composer-disclaimer">
-        Milestono can make mistakes — verify pricing & legal details with a professional.
-      </p>
     </div>
   );
 }
