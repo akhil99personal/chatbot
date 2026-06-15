@@ -11,23 +11,23 @@ function BackgroundScene() {
     <group>
       {/* Soft ambient lighting */}
       <ambientLight intensity={0.6} color="#ffffff" />
-      <pointLight position={[10, 10, 10]} intensity={0.4} color="#10a37f" />
-      <pointLight position={[-10, -10, 5]} intensity={0.3} color="#f0fdf4" />
+      <pointLight position={[10, 10, 10]} intensity={0.4} color="#5b5bff" />
+      <pointLight position={[-10, -10, 5]} intensity={0.3} color="#ececff" />
       
       {/* Subtle geometric shapes for depth */}
       <mesh position={[-3, 1, -5]} scale={1.2} rotation={[0.3, 0.5, 0.2]}>
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#10a37f" opacity={0.08} transparent />
+        <meshStandardMaterial color="#5b5bff" opacity={0.08} transparent />
       </mesh>
       
       <mesh position={[3, -0.5, -4]} scale={0.8} rotation={[0.1, -0.3, 0.4]}>
         <icosahedronGeometry args={[1, 4]} />
-        <meshStandardMaterial color="#0e9d77" opacity={0.06} transparent />
+        <meshStandardMaterial color="#4747e8" opacity={0.06} transparent />
       </mesh>
       
       <mesh position={[0, -2, -3]} scale={1.5} rotation={[0.4, 0.2, -0.1]}>
         <octahedronGeometry args={[1, 2]} />
-        <meshStandardMaterial color="#10a37f" opacity={0.05} transparent />
+        <meshStandardMaterial color="#5b5bff" opacity={0.05} transparent />
       </mesh>
 
       {/* Very subtle moving elements */}
@@ -37,7 +37,7 @@ function BackgroundScene() {
       >
         <mesh position={[2, 1.5, -6]} scale={0.6}>
           <tetrahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial color="#d1f2eb" opacity={0.04} transparent />
+          <meshStandardMaterial color="#ececff" opacity={0.04} transparent />
         </mesh>
       </motion.group>
     </group>
@@ -77,7 +77,7 @@ function WelcomeBackground() {
       <div style={{
         position: "absolute",
         inset: 0,
-        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%)",
+        background: "linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(245, 245, 255, 0.8) 50%, rgba(255, 255, 255, 0.85) 100%)",
         pointerEvents: "none",
       }} />
     </div>
