@@ -26,7 +26,7 @@ import {
 import { upsertThread, loadThreads, makeThread, saveThreads } from "../lib/threads.js";
 import MessageRow, { AssistantTyping } from "./Message.jsx";
 import Composer from "./Composer.jsx";
-import Welcome from "./Welcome.jsx";
+import WelcomePro from "./WelcomePro.jsx";
 import { speak } from "../lib/speech.js";
 
 function newId() { return Math.random().toString(36).slice(2, 12); }
@@ -251,8 +251,8 @@ export default function ChatView({ threadId }) {
     <div className="cb-chat-wrap">
       <div ref={scrollRef} className="cb-scroll">
         {isEmpty ? (
-          <div className="cb-welcome-center">
-            <Welcome
+          <div className="cb-welcome-center" style={{ minHeight: "100%" }}>
+            <WelcomePro
               onPick={(p) => send(p)}
               isLoggedIn={loggedIn}
               userName={userProfile?.fullName || userProfile?.name || ""}
